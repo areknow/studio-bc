@@ -1,0 +1,12 @@
+// Defaults
+@import "site/variables";
+@import "site/global";
+
+// Partials
+@import "site/partials/page-loader";
+@import "site/partials/nav";
+
+// Pages
+@import "site/pages/home";
+@import "site/pages/info";
+@import "site/pages/contact";
