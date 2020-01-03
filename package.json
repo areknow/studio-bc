@@ -1,7 +1,6 @@
 {
-  "name": "dev-stack",
+  "name": "studio-bc",
   "version": "1.0.0",
-  "description": "Static site generator with Sass, Handlebars, Routes and Gulp",
   "main": "index.js",
   "scripts": {
     "start": "gulp watch",
