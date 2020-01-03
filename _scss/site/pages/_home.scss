@@ -1,3 +1,32 @@
 .home-page {
-  
+  .masonry-wrapper {
+    padding: 50px 0;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .masonry {
+    columns: 1;
+    column-gap: 30px;
+  }
+  .masonry-item {
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: 30px;
+    img {
+      max-width: 100%;
+      vertical-align: middle;
+    }
+  }
+
+  @media only screen and (max-width: 1023px) and (min-width: 768px) {  
+    .masonry {
+      columns: 2;
+    }
+  }
+  @media only screen and (min-width: 1024px) {
+    .masonry {
+      columns: 4;
+    }
+  }
 }
+
