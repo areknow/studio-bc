@@ -13,9 +13,4 @@
     console.log('contact');
   });// end document ready
 
-  // ============================================
-  // Example function
-  // ============================================
-  function example() {}
-
 })();

@@ -13,9 +13,4 @@
     console.log('info');
   });// end document ready
 
-  // ============================================
-  // Example function
-  // ============================================
-  function example() {}
-
 })();

@@ -16,15 +16,26 @@ nav {
         font-size: 24px;
         font-weight: 600;
         margin: 0 40px;
+        line-height: normal;
         &:last-child {
           margin-right: 0;
         }
       }
     }
-    // li.active {
-    //   a {
-    //     opacity: 1;
-    //   }
-    // }
+    li.active {
+      a {
+        position: relative;
+        &:after {
+         content: "";
+         position: absolute;
+         bottom: -2px;
+         left: 0;
+         right: 0;
+         height: 2px;
+         width: 100%;
+         background: #000;
+        }
+      }
+    }
   }
 }

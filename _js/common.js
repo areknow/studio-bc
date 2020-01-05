@@ -28,17 +28,6 @@
   });
 
   // ============================================
-  // Document scroll
-  // ============================================
-  $(window).scroll(function() {
-    if($(window).scrollTop() > 100) {
-
-    } else {
-
-    }
-  });
-
-  // ============================================
   // Use body ID to match to active nav link
   // ============================================
   function activeNavLink() {
@@ -52,31 +41,3 @@
   }
 
 })();
-
-
-// Shared functions outside of closure
-
-// ============================================
-// Validate form elements
-// ============================================
-function formValidation(elemClass) {
-  // Set form to valid
-  var valid = true;
-  // Loop through form inputs
-  $(elemClass).each(function(index, elem) {
-    // Check if empty
-    if ($(elem).val() == '' || $(elem).val() == null) {
-      // Show label
-      $(elem).prev('label').show();
-      // Set form to invalid
-      valid = false;
-    } else {
-      // Hide label
-      $(elem).prev('label').hide();
-    }
-  });
-  // Return true and submit form if valid
-  if (valid) {
-    return true;
-  }
-}

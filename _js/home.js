@@ -10,12 +10,18 @@
   // Document ready
   // ============================================
   $(function() {
-    console.log('home');
-  });// end document ready
 
-  // ============================================
-  // Example function
-  // ============================================
-  function example() {}
+    var animDuration = 300;
+
+    // lightbox options
+    lightbox.option({
+      showImageNumberLabel: false,
+      positionFromTop: 200,
+      fadeDuration: animDuration,
+      imageFadeDuration: animDuration,
+      resizeDuration: animDuration,
+    })
+
+  });// end document ready
 
 })();
