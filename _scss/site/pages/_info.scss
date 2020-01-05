@@ -1,3 +1,13 @@
 .info-page {
-  
+  display: flex;
+  justify-content: center;
+  .info-container {
+    padding: 100px 0;
+    max-width: 870px;
+    font-size: 24px;
+    line-height: normal;
+    span {
+      font-weight: 600;
+    }
+  }
 }
