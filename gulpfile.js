@@ -13,6 +13,7 @@ const sass = require('gulp-sass');
 const tap = require('gulp-tap');
 const uglify = require('gulp-uglify');
 const zip = require('gulp-zip');
+const helpers = require('./helpers.js');
 
 
 // ===============================
@@ -76,7 +77,7 @@ function hbsRoot() {
       property: 'data.page',
       remove: true
     }))
-    .pipe(hb()
+    .pipe(hb({handlebars: helpers})
       .partials('./_partials/*.hbs')
       .partials('./_layouts/*.hbs')
       .helpers(require('handlebars-layouts'))

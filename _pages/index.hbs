@@ -7,15 +7,18 @@ name: home
 
     <div class="masonry-wrapper">
       <div class="masonry">
-        <a class="masonry-item" href="https://picsum.photos/450/325?image=100" data-lightbox="masonry-set" data-title="<span>Turbulance</span> - 32x28”<br>$800">
-          <img src="https://picsum.photos/450/325?image=100" class="masonry-content">
-        </a>
-        <a class="masonry-item" href="https://picsum.photos/450/450?image=200" data-lightbox="masonry-set" data-title="<span>Coolness</span> - 32x28”<br>$800">
-          <img src="https://picsum.photos/450/450?image=200" class="masonry-content">
-        </a>
-        <div class="masonry-item">
-          <img src="https://picsum.photos/450/450?image=200" class="masonry-content">
-        </div>
+
+        {{#each site.gallery}}
+          <a
+            class="masonry-item"
+            href="{{this.image}}"
+            data-title="{{caption}}"
+            data-lightbox="masonry-set"
+          >
+            <img src="{{this.image}}" class="masonry-content">
+          </a>
+        {{/each}}
+
         <div class="masonry-item">
           <img src="https://picsum.photos/450/540?image=400" class="masonry-content">
         </div>
