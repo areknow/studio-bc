@@ -9,8 +9,6 @@
   // ============================================
   // Document ready
   // ============================================
-  $(function() {
-    console.log('info');
-  });// end document ready
+  $(function() { });// end document ready
 
 })();

@@ -1,21 +1,3 @@
 {
-  "name": "bc-studio",
-  "gallery": [
-    {
-      "name": "Turbulence",
-      "width": 32,
-      "height": 28,
-      "price": 800,
-      "sold": false,
-      "image": "https://picsum.photos/450/325?image=100"
-    },
-    {
-      "name": "Coolness",
-      "width": 32,
-      "height": 32,
-      "price": 300,
-      "sold": true,
-      "image": "https://picsum.photos/450/450?image=200"
-    }
-  ]
+  "name": "bc-studio"
 }
