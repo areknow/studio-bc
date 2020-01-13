@@ -11,9 +11,8 @@ const htmlmin = require('gulp-htmlmin');
 const rename = require("gulp-rename");
 const sass = require('gulp-sass');
 const tap = require('gulp-tap');
-const uglify = require('gulp-uglify');
+const uglify = require('gulp-uglify-es').default;
 const zip = require('gulp-zip');
-const helpers = require('./helpers.js');
 
 
 // ===============================
@@ -77,7 +76,7 @@ function hbsRoot() {
       property: 'data.page',
       remove: true
     }))
-    .pipe(hb({handlebars: helpers})
+    .pipe(hb()
       .partials('./_partials/*.hbs')
       .partials('./_layouts/*.hbs')
       .helpers(require('handlebars-layouts'))
