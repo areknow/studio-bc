@@ -1,38 +1,17 @@
 .home-page {
-  .masonry-wrapper {
-    padding: 50px 0;
-    margin-right: auto;
-    margin-left: auto;
-  }
+  
   .masonry {
-    columns: 1;
-    column-gap: 30px;
-  }
-  .masonry-item {
-    display: inline-block;
-    vertical-align: top;
-    margin-bottom: 30px;
-    img {
-      max-width: 100%;
-      vertical-align: middle;
+    a {
+      // padding: 15px;
+      img {
+        width: 100%;
+        display: block;
+        height: auto;
+      }
     }
+    
   }
 
-  @media only screen and (max-width: 767px) and (min-width: 340px) {  
-    .masonry {
-      columns: 2;
-    }
-  }
-  @media only screen and (max-width: 1023px) and (min-width: 768px) {  
-    .masonry {
-      columns: 3;
-    }
-  }
-  @media only screen and (min-width: 1024px) {
-    .masonry {
-      columns: 4;
-    }
-  }
 }
 
 
