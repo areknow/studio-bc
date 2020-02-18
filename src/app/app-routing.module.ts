@@ -1,13 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminGuardService } from './shared/services/admin-guard.service copy';
-import { AuthenticationGuardService } from './shared/services/authentication-guard.service';
-
+import { AdminGuardService } from './admin/admin-guard.service';
 
 const routes: Routes = [
   {
     path: '',
-    canActivate: [AuthenticationGuardService],
     loadChildren: () => import('./gallery/gallery.module').then((m) => m.GalleryModule),
   },
   {
