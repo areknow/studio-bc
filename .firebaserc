@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "studio-bc": {
+      "hosting": {
+        "studio-bc": [
+          "studio-bc"
+        ]
+      }
+    }
+  }
+}
