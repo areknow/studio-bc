@@ -1,11 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminComponent } from './admin.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AdminComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'edit',
+      },
+      {
+        path: 'edit',
+        loadChildren: () => import('./edit/edit.module').then((m) => m.EditModule),
+      },
+      {
+        path: 'login',
+        loadChildren: () => import('./login/login.module').then((m) => m.LoginModule),
+      }
+    ]
   },
 ];
 
