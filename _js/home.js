@@ -6,9 +6,10 @@
 
 (() => {
 
-  var mediaKey = '5e1bc2bb4cfae7143cefb0d2';
-  var mediaServer = 'https://studiobc-77e3.restdb.io';
-  var ajaxSettings = {
+  const mediaKey = '5e1bc2bb4cfae7143cefb0d2';
+  const mediaServer = 'https://studiobc-77e3.restdb.io';
+
+  const ajaxSettings = {
     async: true,
     crossDomain: true,
     url: `${mediaServer}/rest/gallery`,
@@ -18,27 +19,35 @@
       'x-apikey': '5e1bc2bb4cfae7143cefb0d2',
       'cache-control': 'no-cache'
     }
-  }
+  };
+
+  const chocolatOptions = {
+    fullScreen: null,
+  };
+  
+  const macyOptions = {
+    container: '.masonry',
+    columns: 5,
+    trueOrder: true,
+    margin: { y: 30, x: 30 },
+    breakAt: {
+      1200: 4,
+      940: {
+        margin: { x: 10, y: 10 },
+        columns: 3
+      },
+      520: 2,
+      400: 1
+    },
+  };
 
   // ============================================
   // Document ready
   // ============================================
   $(() => {
 
-    renderGrid();
-
-    // Generate the masonry grid
+    // Generate the masonry grid and init lightbox
     getGallery();
-
-    // lightbox options
-    var animDuration = 300;
-    lightbox.option({
-      showImageNumberLabel: false,
-      fadeDuration: animDuration,
-      imageFadeDuration: animDuration,
-      resizeDuration: animDuration,
-      maxHeight: 700,
-    })
 
   });// end document ready
 
@@ -59,26 +68,20 @@
    * Render the masonry grid
    */
   const renderGrid = () => {
-    new Macy({
-      container: '.masonry',
-      columns: 4,
-      trueOrder: true,
-      margin: {
-        y: 30,
-        x: 30,
-      },
-      breakAt: {
-        1200: 4,
-        940: {
-          margin: {
-            x: 10,
-            y: 10,
-          },
-          columns: 3
-        },
-        520: 2,
-        400: 1
-      },
+    // Init Macy
+    new Macy(macyOptions);
+    // Init Chocolat
+    $('.chocolat').Chocolat(chocolatOptions);
+    // Hide page loader
+    hidePageLoader();
+  }
+
+  /**
+   * Hide page loader
+   */
+  const hidePageLoader = () => {
+    $( ".page-loader-cover" ).fadeOut(500, function() {
+      $( ".page-loader-cover" ).remove();
     });
   }
 
@@ -88,9 +91,9 @@
    */
   const masonryItem = (element) => {
     return $('<a/>')
+    .addClass('chocolat-image')
     .attr('href', masonryImage(element.image[0]))
-    .attr('data-title', masonryCaption(element))
-    .attr('data-lightbox', 'masonry-set')
+    .attr('title', masonryCaption(element))
     .append(
       $('<img/>')
       .attr('src', masonryImage(element.thumbnail[0]))

@@ -28,7 +28,13 @@ body {
   user-select: none;
 }
 .page-column {
-  max-width: 1140px;
+  max-width: 1560px;
   margin: auto;
   padding: 0 30px;
+}
+
+@media(max-width: 940px) {
+  .page-column {
+    padding: 0 10px;
+  }
 }
