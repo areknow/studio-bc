@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { EditGuardService } from './edit-guard.service';
-import { EditComponent } from './edit.component';
+import { ErrorGuardService } from './error-guard.service';
+import { ErrorComponent } from './error.component';
 
 const routes: Routes = [
   {
     path: '',
-    canActivate: [EditGuardService],
-    component: EditComponent,
+    canActivate: [ErrorGuardService],
+    component: ErrorComponent,
   },
 ];
 
@@ -15,4 +15,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class EditRoutingModule { }
+export class ErrorRoutingModule { }

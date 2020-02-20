@@ -14,9 +14,9 @@ const routes: Routes = [
         loadChildren: () => import('./edit/edit.module').then((m) => m.EditModule),
       },
       {
-        path: 'login',
-        loadChildren: () => import('./login/login.module').then((m) => m.LoginModule),
-      }
+        path: 'error',
+        loadChildren: () => import('./error/error.module').then((m) => m.ErrorModule),
+      },
     ]
   },
 ];

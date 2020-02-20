@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AdminService } from '../admin.service';
 
 const ELEMENT_DATA = [
   {
@@ -33,7 +34,11 @@ export class EditComponent implements OnInit {
   displayedColumns: string[] = ['name', 'width', 'height', 'price', 'sold', 'image', 'thumbnail', 'edit'];
   dataSource = ELEMENT_DATA;
 
-  constructor() { }
+  get isAdmin(): boolean {
+    return this.adminService.isAdmin;
+  }
+
+  constructor(private adminService: AdminService) { }
 
   ngOnInit(): void {
   }
@@ -44,6 +49,10 @@ export class EditComponent implements OnInit {
 
   editRow(id: number): void {
     console.log(id)
+  }
+
+  logout(): void {
+    this.adminService.logout();
   }
 
 }
