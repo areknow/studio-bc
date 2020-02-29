@@ -1,19 +1,39 @@
-<h1 mat-dialog-title>Add a new item</h1>
+<progress *ngIf="uploading" class="pure-material-progress-linear"></progress>
+<h1 mat-dialog-title>{{ data.editing ? 'Edit item' : 'Add item' }}</h1>
 <div mat-dialog-content>
-  <mat-form-field>
-    <mat-label>Name</mat-label>
-    <input matInput [(ngModel)]="data.name">
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Width</mat-label>
-    <input matInput [(ngModel)]="data.width">
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Height</mat-label>
-    <input matInput [(ngModel)]="data.height">
-  </mat-form-field>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="data.content.name" required formControlName="name">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Width</mat-label>
+      <input matInput [(ngModel)]="data.content.width" required formControlName="width">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Height</mat-label>
+      <input matInput [(ngModel)]="data.content.height" required formControlName="height">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Price</mat-label>
+      <input matInput [(ngModel)]="data.content.price" required formControlName="price">
+    </mat-form-field>
+  </form>
+
+  <div>
+    <mat-checkbox [(ngModel)]="data.content.sold">Sold</mat-checkbox>
+  </div>
+
+  <div>
+    image<br>
+    <input type="file" (change)="handleFile('image', $event)">
+  </div>
+  <div>
+    thumbnail<br>
+    <input type="file" (change)="handleFile('thumbnail', $event)">
+  </div>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button [disabled]="uploading || !form.valid" mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
 </div>

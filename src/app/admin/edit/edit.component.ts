@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Component } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection, DocumentData } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
+import 'firebase/storage';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AdminService } from '../admin.service';
 import { DialogComponent, IDialogData } from './dialog/dialog.component';
 
@@ -20,18 +22,31 @@ export interface IGalleryItem {
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss'],
 })
-export class EditComponent implements OnInit {
+export class EditComponent {
 
-  columns = ['name', 'width', 'height', 'price', 'sold', 'image', 'thumbnail', 'edit'];
+  columns = [
+    'name',
+    'width',
+    'height',
+    'price',
+    'sold',
+    'image',
+    'thumbnail',
+    'actions',
+  ];
 
   private itemsCollection: AngularFirestoreCollection<IGalleryItem>;
   items: Observable<IGalleryItem[]>;
 
-  item: IDialogData = {
-    name: '',
+  dialogData: IGalleryItem = {
+    name: null,
     width: null,
     height: null,
-  }
+    price: null,
+    sold: null,
+    image: null,
+    thumbnail: null,
+  };
 
   get isAdmin(): boolean {
     return this.adminService.isAdmin;
@@ -43,27 +58,58 @@ export class EditComponent implements OnInit {
     public dialog: MatDialog,
   ) {
     this.itemsCollection = this.angularFirestore.collection<IGalleryItem>('gallery');
-    this.items = this.itemsCollection.valueChanges();
-    this.items.subscribe(m => console.log(m));
+    this.items = this.itemsCollection.snapshotChanges().pipe(map(actions => {
+      return actions.map(action => {
+        const data = action.payload.doc.data() as IGalleryItem;
+        const id = action.payload.doc.id;
+        return { id, ...data };
+      });
+    }));
   }
 
-  ngOnInit(): void {
+  openModal(type: 'add'|'edit', data: DocumentData, id?: number): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '350px',
+      height: '500px',
+      data: {
+        editing: type === 'edit',
+        content: data,
+      },
+    });
+    dialogRef.afterClosed().subscribe(async (result: IDialogData)  => {
+      if (result) {
+        try {
+          if (type === 'add') {
+            await this.itemsCollection.add(result.content);
+          } else if (type === 'edit') {
+            await this.itemsCollection.doc(String(id)).set(result.content);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
   }
 
   newRow(): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '250px',
-      data: this.item,
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.item = result;
-    });
+    this.openModal('add', this.dialogData);
   }
 
-  editRow(id: number): void {
-    console.log(id);
+  async editRow(id: number): Promise<void> {
+    try {
+      const doc = await this.itemsCollection.doc(String(id)).ref.get();
+      this.openModal('edit', doc.data(), id);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async deleteRow(id: number): Promise<void> {
+    try {
+      await this.itemsCollection.doc(String(id)).ref.delete();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   logout(): void {

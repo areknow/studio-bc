@@ -13,16 +13,12 @@ const routes: Routes = [
         path: 'edit',
         loadChildren: () => import('./edit/edit.module').then((m) => m.EditModule),
       },
-      {
-        path: 'error',
-        loadChildren: () => import('./error/error.module').then((m) => m.ErrorModule),
-      },
-    ]
+    ],
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AdminRoutingModule { }

@@ -4,7 +4,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
-import { of, Observable, EMPTY } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 export interface IUser {
@@ -49,14 +49,16 @@ export class AdminService {
     const provider = new firebase.auth.GoogleAuthProvider();
     const credential = await this.angularFireAuth.signInWithPopup(provider);
     this.updateUserData(credential.user);
-    this.router.navigate(['/admin/edit']);
     this.loggedIn = true;
+    this.router.navigate(['/admin/edit']);
+    sessionStorage.setItem('session', String(true));
   }
 
   async logout(): Promise<void> {
     await this.angularFireAuth.signOut();
-    this.router.navigate(['/']);
     this.loggedIn = false;
+    this.router.navigate(['/']);
+    sessionStorage.removeItem('session');
   }
 
   private updateUserData(user: IUser): Promise<void> {
