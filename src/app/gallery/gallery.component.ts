@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { AdminService } from '../admin/admin.service';
 import { IGalleryItem } from '../admin/edit/edit.component';
 
+declare var require: any;
+
 @Component({
   selector: 'app-gallery',
   templateUrl: './gallery.component.html',
@@ -13,7 +15,9 @@ import { IGalleryItem } from '../admin/edit/edit.component';
 export class GalleryComponent implements OnInit {
 
   private itemsCollection: AngularFirestoreCollection<IGalleryItem>;
-  items: Observable<IGalleryItem[]>;
+  items$: Observable<IGalleryItem[]>;
+  items: any[];
+  loading = true;
 
   get isLoggedIn(): boolean {
     return this.adminService.loggedIn;
@@ -24,10 +28,34 @@ export class GalleryComponent implements OnInit {
     private angularFirestore: AngularFirestore,
   ) {
     this.itemsCollection = this.angularFirestore.collection<IGalleryItem>('gallery');
-    this.items = this.itemsCollection.valueChanges();
+    this.items$ = this.itemsCollection.valueChanges();
+    this.items$.subscribe(response => {
+      this.items = response;
+      setTimeout(() => {
+        this.renderGrid();
+      }, 0);
+    });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void { }
+
+  renderGrid(): void {
+    const macy = require('macy');
+    const masonry = new macy({
+      container: '.masonry',
+      columns: 5,
+      trueOrder: false,
+      margin: { y: 30, x: 30 },
+      breakAt: {
+        1200: 4,
+        940: {
+          margin: { x: 10, y: 10 },
+          columns: 3,
+        },
+        520: 2,
+        400: 1,
+      },
+    });
   }
 
 }

@@ -11,16 +11,15 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { ImagePipeModule } from 'src/app/shared/pipes/image/image.module';
 import { DialogComponent } from './dialog/dialog.component';
 import { EditRoutingModule } from './edit-routing.module';
 import { EditComponent } from './edit.component';
-import { ImagePipe } from './image.pipe';
 
 @NgModule({
   declarations: [
     EditComponent,
     DialogComponent,
-    ImagePipe,
   ],
   imports: [
     FormsModule,
@@ -37,6 +36,7 @@ import { ImagePipe } from './image.pipe';
     MatSelectModule,
     MatRadioModule,
     MatCheckboxModule,
+    ImagePipeModule,
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },

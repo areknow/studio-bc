@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentData } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import 'firebase/storage';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -22,7 +24,14 @@ export interface IGalleryItem {
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss'],
 })
-export class EditComponent {
+export class EditComponent implements OnInit {
+
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+  dataSource = new MatTableDataSource();
+
+  private itemsCollection: AngularFirestoreCollection<IGalleryItem>;
+  items: Observable<IGalleryItem[]>;
 
   columns = [
     'name',
@@ -35,15 +44,12 @@ export class EditComponent {
     'actions',
   ];
 
-  private itemsCollection: AngularFirestoreCollection<IGalleryItem>;
-  items: Observable<IGalleryItem[]>;
-
   dialogData: IGalleryItem = {
     name: null,
     width: null,
     height: null,
     price: null,
-    sold: null,
+    sold: false,
     image: null,
     thumbnail: null,
   };
@@ -65,18 +71,24 @@ export class EditComponent {
         return { id, ...data };
       });
     }));
+    this.items.subscribe(items => {
+      this.dataSource.data = items;
+    });
   }
+
+  ngOnInit(): void { }
 
   openModal(type: 'add'|'edit', data: DocumentData, id?: number): void {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '350px',
+      disableClose: true,
+      width: '400px',
       height: '500px',
       data: {
         editing: type === 'edit',
         content: data,
       },
     });
-    dialogRef.afterClosed().subscribe(async (result: IDialogData)  => {
+    dialogRef.afterClosed().subscribe(async (result: IDialogData) => {
       if (result) {
         try {
           if (type === 'add') {
@@ -87,6 +99,7 @@ export class EditComponent {
         } catch (error) {
           console.log(error);
         }
+        this.resetForm();
       }
     });
   }
@@ -114,6 +127,22 @@ export class EditComponent {
 
   logout(): void {
     this.adminService.logout();
+  }
+
+  resetForm(): void {
+    this.dialogData = {
+      name: null,
+      width: null,
+      height: null,
+      price: null,
+      sold: false,
+      image: null,
+      thumbnail: null,
+    };
+  }
+
+  sortData(event) {
+    console.log(event)
   }
 
 }

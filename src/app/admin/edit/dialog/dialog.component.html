@@ -16,7 +16,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Price</mat-label>
-      <input matInput [(ngModel)]="data.content.price" required formControlName="price">
+      <input matInput [(ngModel)]="data.content.price" required formControlName="price" type="number">
     </mat-form-field>
   </form>
 
@@ -35,5 +35,10 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="cancel()">Cancel</button>
-  <button [disabled]="uploading || !form.valid" mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+  <button
+    mat-button
+    cdkFocusInitial
+    [mat-dialog-close]="data"
+    [disabled]="uploading || !form.valid"
+    >Save</button>
 </div>

@@ -1,3 +1,10 @@
-<a *ngIf="isLoggedIn" routerLink="admin">admin</a>
+<div class="page-column">
+  <app-nav></app-nav>
 
-<div *ngIf="items | async">{{ items | async | json}}</div>
+  <div class="gallery">
+    <div class="masonry">
+      <img *ngFor="let item of items" [src]="item.thumbnail | image : 'img'">
+    </div>
+  </div>
+  
+</div>

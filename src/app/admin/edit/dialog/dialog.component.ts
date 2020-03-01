@@ -36,6 +36,7 @@ export class DialogComponent {
 
   cancel(): void {
     this.dialogRef.close();
+    this.form.reset();
   }
 
   async handleFile(type: string, event: any): Promise<void> {
@@ -43,7 +44,7 @@ export class DialogComponent {
     const file = event.target.files[0];
     const hash = this.generateRandomHash(64);
     await this.angularFireStorage.upload(hash, file);
-    this.data[type] = hash;
+    this.data.content[type] = hash;
     this.uploading = false;
   }
 
