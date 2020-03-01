@@ -29,6 +29,7 @@
               ]
             },
             "assets": [
+              "src/_redirects",
               "src/favicon.ico",
               "src/assets/images"
             ],
