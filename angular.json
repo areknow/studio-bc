@@ -31,13 +31,18 @@
             "assets": [
               "src/_redirects",
               "src/favicon.ico",
-              "src/assets/images"
+              "src/assets/images",
+              "src/assets/vendor"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/assets/vendor/chocolat/css/chocolat.min.css",
               "src/assets/scss/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/jquery/dist/jquery.min.js",
+              "src/assets/vendor/chocolat/js/chocolat.min.js"
+            ]
           },
           "configurations": {
             "production": {

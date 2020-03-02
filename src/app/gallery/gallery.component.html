@@ -3,7 +3,14 @@
 
   <div class="gallery">
     <div class="masonry">
-      <img *ngFor="let item of items" [src]="item.thumbnail | image : 'img'">
+      <a
+        *ngFor="let item of items"
+        class="chocolat-image"
+        [href]="item.image | image : 'img'"
+        [title]="item.name"
+      >
+        <img [src]="item.thumbnail | image : 'img'">
+      </a>
     </div>
   </div>
   

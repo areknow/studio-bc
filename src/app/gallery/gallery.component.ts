@@ -7,6 +7,26 @@ import { IGalleryItem } from '../admin/edit/edit.component';
 
 declare var require: any;
 
+const CHOCOLAT_OPTIONS = {
+  fullScreen: null,
+};
+
+const MACY_OPTIONS = {
+  container: '.masonry',
+  columns: 5,
+  trueOrder: true,
+  margin: { y: 30, x: 30 },
+  breakAt: {
+    1200: 4,
+    940: {
+      margin: { x: 10, y: 10 },
+      columns: 3,
+    },
+    520: 2,
+    400: 1,
+  },
+};
+
 @Component({
   selector: 'app-gallery',
   templateUrl: './gallery.component.html',
@@ -41,21 +61,8 @@ export class GalleryComponent implements OnInit {
 
   renderGrid(): void {
     const macy = require('macy');
-    const masonry = new macy({
-      container: '.masonry',
-      columns: 5,
-      trueOrder: false,
-      margin: { y: 30, x: 30 },
-      breakAt: {
-        1200: 4,
-        940: {
-          margin: { x: 10, y: 10 },
-          columns: 3,
-        },
-        520: 2,
-        400: 1,
-      },
-    });
+    const masonry = new macy(MACY_OPTIONS);
+    $('.masonry').Chocolat(CHOCOLAT_OPTIONS);
   }
 
 }
