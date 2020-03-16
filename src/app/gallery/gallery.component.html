@@ -1,13 +1,17 @@
 <div class="page-column">
   <app-nav></app-nav>
 
-  <div class="gallery">
+  <div class="loader" *ngIf="loading">
+    <app-loader></app-loader>
+  </div>
+
+  <div class="gallery" [class.hidden]="loading">
     <div class="masonry">
       <a
         *ngFor="let item of items"
         class="chocolat-image"
         [href]="item.image | image : 'img'"
-        [title]="item.name"
+        [title]="item | caption"
       >
         <img [src]="item.thumbnail | image : 'img'">
       </a>

@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFirestoreCollection } from '@angular/fire/firestore/public_api';
-import { Observable } from 'rxjs';
 import { AdminService } from '../admin/admin.service';
 import { IGalleryItem } from '../admin/edit/edit.component';
 
@@ -32,11 +31,10 @@ const MACY_OPTIONS = {
   templateUrl: './gallery.component.html',
   styleUrls: ['./gallery.component.scss'],
 })
-export class GalleryComponent implements OnInit {
+export class GalleryComponent {
 
   private itemsCollection: AngularFirestoreCollection<IGalleryItem>;
-  items$: Observable<IGalleryItem[]>;
-  items: any[];
+  items: IGalleryItem[] = [];
   loading = true;
 
   get isLoggedIn(): boolean {
@@ -48,8 +46,7 @@ export class GalleryComponent implements OnInit {
     private angularFirestore: AngularFirestore,
   ) {
     this.itemsCollection = this.angularFirestore.collection<IGalleryItem>('gallery');
-    this.items$ = this.itemsCollection.valueChanges();
-    this.items$.subscribe(response => {
+    this.itemsCollection.valueChanges().subscribe(response => {
       this.items = response;
       setTimeout(() => {
         this.renderGrid();
@@ -57,12 +54,13 @@ export class GalleryComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
-
   renderGrid(): void {
     const macy = require('macy');
     const masonry = new macy(MACY_OPTIONS);
     $('.masonry').Chocolat(CHOCOLAT_OPTIONS);
+    setTimeout(() => {
+      this.loading = false;
+    }, 1000);
   }
 
 }

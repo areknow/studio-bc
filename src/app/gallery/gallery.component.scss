@@ -9,3 +9,38 @@
     }
   }
 }
+
+.hidden {
+  visibility: hidden;
+  height: 0px;
+  overflow: hidden;
+}
+
+.loader {
+  height: calc(100vh - 150px);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+::ng-deep {
+  .chocolat-overlay {
+    background-color: #1b1b1b;
+    opacity: .9;
+  }
+  .chocolat-zoomed {
+    .chocolat-top,
+    .chocolat-left,
+    .chocolat-right,
+    .chocolat-bottom {
+      display: none !important;
+    }
+  }
+  .chocolat-fullscreen {
+    display: none !important;
+  }
+  .chocolat-pagination {
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+  }
+}
