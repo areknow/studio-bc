@@ -27,16 +27,23 @@ export class DialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: IDialogData,
   ) {
     this.form = this.formBuilder.group({
-      name: ['', Validators.required],
-      width: ['', Validators.required],
-      height: ['', Validators.required],
-      price: ['', Validators.required],
+      name: [this.data.content.name, Validators.required],
+      width: [this.data.content.width, Validators.required],
+      height: [this.data.content.height, Validators.required],
+      price: [this.data.content.price, Validators.required],
     });
   }
 
   cancel(): void {
     this.dialogRef.close();
     this.form.reset();
+  }
+
+  save(): void {
+    this.data.content.name = this.form.value.name;
+    this.data.content.width = this.form.value.width;
+    this.data.content.height = this.form.value.height;
+    this.data.content.price = this.form.value.price;
   }
 
   async handleFile(type: string, event: any): Promise<void> {

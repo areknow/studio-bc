@@ -13,6 +13,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ImagePipeModule } from 'src/app/shared/pipes/image/image.module';
 import { DialogComponent } from './dialog/dialog.component';
+import { FileLabelPipe } from './dialog/file-label.pipe';
 import { EditRoutingModule } from './edit-routing.module';
 import { EditComponent } from './edit.component';
 
@@ -20,6 +21,7 @@ import { EditComponent } from './edit.component';
   declarations: [
     EditComponent,
     DialogComponent,
+    FileLabelPipe,
   ],
   imports: [
     FormsModule,
