@@ -1,0 +1,89 @@
+{
+  "extends": ["tslint:latest"],
+  "rulesDirectory": ["node_modules/codelyzer"],
+  "linterOptions": {
+    "exclude": [
+      "src/polyfills.ts",
+      "src/test.ts",
+      "src/main.ts"
+    ]
+  },
+  "rules": {
+    "no-namespace": false,
+    "use-lifecycle-interface": true,
+    "max-line-length": false,
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "no-console": false,
+    "arrow-parens": false,
+    "no-string-literal": false,
+    "no-implicit-dependencies": false,
+    "array-type": false,
+    "prefer-conditional-expression": false,
+    "linebreak-style": [true, "LF"],
+    "i18n": false,
+    "increment-decrement": false,
+    "max-classes-per-file": false,
+    "member-access": [true, "no-public"],
+    "member-ordering": false,
+    "newline-per-chained-call": false,
+    "newline-before-return": false,
+    "no-empty": false,
+    "no-non-null-assertion": false,
+    "no-unnecessary-callback-wrapper": false,
+    "no-null-keyword": false,
+    "no-submodule-imports": false,
+    "no-use-before-declare": false,
+    "only-arrow-functions": false,
+    "one-line": [
+      true,
+      "check-catch",
+      "check-else",
+      "check-open-brace",
+      "check-whitespace"
+    ],
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "prefer-readonly": false,
+    "strict-boolean-expressions": false,
+    "file-name-casing": [true, "kebab-case"],
+    "return-undefined": false,
+    "typedef": [
+      true,
+      "call-signature",
+      "parameter",
+      "property-declaration"
+    ],
+    "trailing-comma": [true, { "singleline": "never", "multiline": "always" }],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
+    ],
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-separator",
+      "check-type",
+      "check-preblock"
+    ],
+    "angular-whitespace": false,
+    "component-class-suffix": false,
+    "directive-class-suffix": false,
+    "no-host-metadata-property": false,
+    "no-inputs-metadata-property": false,
+    "no-outputs-metadata-property": false,
+    "no-output-rename": false,
+    "no-input-rename": false,
+    "no-attribute-decorator": false,
+    "use-component-view-encapsulation": false,
+    "template-i18n": false,
+    "no-conflicting-lifecycle": false,
+    "component-max-inline-declarations": false
+  }
+}

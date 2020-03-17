@@ -1,0 +1,10 @@
+<nav>
+  <a [routerLink]="['/']">
+    <img class="logo" src="/assets/images/logo.svg">
+  </a>
+  <ul class="menu">
+    <li routerLinkActive="active"><a [routerLink]="['/info']">Info</a></li>
+    <li><a href="mailto:boris.crowther@gmail.com">Contact</a></li>
+    <li *ngIf="isLoggedIn && isAdmin"><a [routerLink]="['/admin']">Admin</a></li>
+  </ul>
+</nav>
