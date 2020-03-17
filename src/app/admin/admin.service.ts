@@ -24,7 +24,7 @@ export class AdminService {
   user$: Observable<IUser> = EMPTY;
 
   loggedIn = false;
-  isAdmin = false;
+  isAdmin = undefined;
 
   constructor(
     private angularFireAuth: AngularFireAuth,

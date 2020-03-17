@@ -17,6 +17,7 @@ export interface IGalleryItem {
   sold: boolean;
   image: string;
   thumbnail: string;
+  date: Date;
 }
 
 @Component({
@@ -26,7 +27,7 @@ export interface IGalleryItem {
 })
 export class EditComponent {
 
-  @ViewChild(MatSort, {static: false}) set content(sort: MatSort) {
+  @ViewChild(MatSort) set content(sort: MatSort) {
     this.dataSource.sort = sort;
   }
 
@@ -40,6 +41,7 @@ export class EditComponent {
     'width',
     'height',
     'price',
+    'date',
     'sold',
     'image',
     'thumbnail',
@@ -54,6 +56,7 @@ export class EditComponent {
     sold: false,
     image: null,
     thumbnail: null,
+    date: null,
   };
 
   get isAdmin(): boolean {
@@ -92,6 +95,8 @@ export class EditComponent {
       if (result) {
         try {
           if (type === 'add') {
+            // Add date before saving
+            result.content.date = new Date();
             await this.itemsCollection.add(result.content);
           } else if (type === 'edit') {
             await this.itemsCollection.doc(String(id)).set(result.content);
@@ -138,6 +143,7 @@ export class EditComponent {
       sold: false,
       image: null,
       thumbnail: null,
+      date: null,
     };
   }
 
