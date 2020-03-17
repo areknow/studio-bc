@@ -13,6 +13,17 @@
     <mat-toolbar-row>
       <span>Administration</span>
       <span class="toolbar-spacer"></span>
+      <div class="search">
+        <mat-icon #searchIcon>search</mat-icon>
+        <input
+          #input 
+          placeholder="Search" 
+          (keyup)="search(input.value)"
+          (focus)="searchIcon.color = 'primary'" 
+          (blur)="searchIcon.color = null" 
+        >
+      </div>
+      <span class="toolbar-spacer"></span>
       <button (click)="newRow()" mat-icon-button>
         <mat-icon>add</mat-icon>
       </button>

@@ -34,7 +34,8 @@ export class EditComponent {
   dataSource = new MatTableDataSource();
 
   private itemsCollection: AngularFirestoreCollection<IGalleryItem>;
-  items: Observable<IGalleryItem[]>;
+  items$: Observable<IGalleryItem[]>;
+  items: IGalleryItem[];
 
   columns = [
     'name',
@@ -69,15 +70,16 @@ export class EditComponent {
     public dialog: MatDialog,
   ) {
     this.itemsCollection = this.angularFirestore.collection<IGalleryItem>('gallery');
-    this.items = this.itemsCollection.snapshotChanges().pipe(map(actions => {
+    this.items$ = this.itemsCollection.snapshotChanges().pipe(map(actions => {
       return actions.map(action => {
         const data = action.payload.doc.data() as IGalleryItem;
         const id = action.payload.doc.id;
         return { id, ...data };
       });
     }));
-    this.items.subscribe(items => {
-      this.dataSource.data = items;
+    this.items$.subscribe(items => {
+      this.items = items;
+      this.dataSource.data = this.items;
     });
   }
 
@@ -145,6 +147,14 @@ export class EditComponent {
       thumbnail: null,
       date: null,
     };
+  }
+
+  search(value: string): void {
+    if (value) {
+      this.dataSource.data = this.items.filter((item: IGalleryItem) => item.name.toLowerCase().includes(value.toLowerCase()));
+    } else {
+      this.dataSource.data = this.items;
+    }
   }
 
 }
