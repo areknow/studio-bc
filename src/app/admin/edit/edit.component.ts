@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentData } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
@@ -24,9 +24,11 @@ export interface IGalleryItem {
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss'],
 })
-export class EditComponent implements OnInit {
+export class EditComponent {
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatSort, {static: false}) set content(sort: MatSort) {
+    this.dataSource.sort = sort;
+  }
 
   dataSource = new MatTableDataSource();
 
@@ -75,8 +77,6 @@ export class EditComponent implements OnInit {
       this.dataSource.data = items;
     });
   }
-
-  ngOnInit(): void { }
 
   openModal(type: 'add'|'edit', data: DocumentData, id?: number): void {
     const dialogRef = this.dialog.open(DialogComponent, {
@@ -139,10 +139,6 @@ export class EditComponent implements OnInit {
       image: null,
       thumbnail: null,
     };
-  }
-
-  sortData(event) {
-    console.log(event)
   }
 
 }

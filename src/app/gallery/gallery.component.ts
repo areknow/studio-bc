@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFirestoreCollection } from '@angular/fire/firestore/public_api';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AdminService } from '../admin/admin.service';
 import { IGalleryItem } from '../admin/edit/edit.component';
 
