@@ -11,17 +11,16 @@ const CHOCOLAT_OPTIONS = {
 
 const MACY_OPTIONS = {
   container: '.masonry',
-  columns: 5,
+  columns: 4,
   trueOrder: true,
   margin: { y: 30, x: 30 },
   breakAt: {
-    1200: 4,
     940: {
       margin: { x: 10, y: 10 },
       columns: 3,
     },
-    520: 2,
-    400: 1,
+    620: 2,
+    370: 1,
   },
 };
 
