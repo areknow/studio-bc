@@ -7,12 +7,13 @@ declare var require: any;
 
 const CHOCOLAT_OPTIONS = {
   fullScreen: null,
+  loop: true,
 };
 
 const MACY_OPTIONS = {
   container: '.masonry',
   columns: 4,
-  trueOrder: true,
+  trueOrder: false,
   margin: { y: 30, x: 30 },
   breakAt: {
     940: {
