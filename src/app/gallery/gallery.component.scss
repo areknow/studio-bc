@@ -36,11 +36,27 @@
       display: none !important;
     }
   }
+  .chocolat-top {
+    display: none !important;
+  }
+  .chocolat-bottom {
+    text-align: center !important;
+    background-color: transparent !important;
+    padding-bottom: 48px;
+  }
+  .chocolat-description {
+    font-size: 26px;
+    float: unset !important;
+    font-family: 'Montserrat', sans-serif;
+    span {
+      font-weight: bold;
+      margin-left: 40px;
+    }
+  }
   .chocolat-fullscreen {
     display: none !important;
   }
   .chocolat-pagination {
-    margin-right: 0 !important;
-    padding-right: 0 !important;
+    display: none !important;
   }
 }
