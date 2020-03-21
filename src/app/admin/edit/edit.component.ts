@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { DocumentData } from '@angular/fire/firestore';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
@@ -38,7 +38,7 @@ export class ConfirmDialog {
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss'],
 })
-export class EditComponent {
+export class EditComponent implements OnInit {
 
   @ViewChild('table') table: MatTable<IGalleryItem>;
 
@@ -50,17 +50,7 @@ export class EditComponent {
 
   items: IGalleryItem[];
 
-  columns = [
-    'name',
-    'width',
-    'height',
-    'price',
-    'date',
-    'sold',
-    'image',
-    'thumbnail',
-    'actions',
-  ];
+  columns = [];
 
   dialogData: IGalleryItem = {
     name: null,
@@ -86,6 +76,10 @@ export class EditComponent {
       this.items = items;
       this.dataSource.data = this.items;
     });
+  }
+
+  ngOnInit(): void {
+    this.onResize();
   }
 
   openSortModal(): void {
@@ -175,6 +169,29 @@ export class EditComponent {
       this.dataSource.data = this.items.filter((item: IGalleryItem) => item.name.toLowerCase().includes(value.toLowerCase()));
     } else {
       this.dataSource.data = this.items;
+    }
+  }
+
+  @HostListener('window:resize') onResize(): void {
+    if (window.innerWidth > 600) {
+      this.columns = [
+        'name',
+        'width',
+        'height',
+        'price',
+        'date',
+        'sold',
+        'image',
+        'thumbnail',
+        'actions',
+      ];
+    } else {
+      this.columns = [
+        'name',
+        'sold',
+        'thumbnail',
+        'actions',
+      ];
     }
   }
 

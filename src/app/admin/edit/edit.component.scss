@@ -81,3 +81,11 @@ table {
   }
 }
 
+
+
+
+@media(max-width: 600px) {
+  .search {
+    display: none;
+  }
+}
