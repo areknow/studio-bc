@@ -1,29 +1,24 @@
 import { Component, Inject } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/storage';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { IGalleryItem } from '../edit.component';
-
-export interface IDialogData {
-  editing: boolean;
-  content: IGalleryItem;
-}
+import { StorageService } from 'src/app/shared/services/storage.service';
+import { IDialogData } from 'src/app/shared/types';
 
 @Component({
-  selector: 'app-dialog',
-  templateUrl: './dialog.component.html',
-  styleUrls: ['./dialog.component.scss'],
+  selector: 'app-add-dialog',
+  templateUrl: './add-dialog.component.html',
+  styleUrls: ['./add-dialog.component.scss'],
 })
-export class DialogComponent {
+export class AddDialogComponent {
 
   uploading = false;
   form: FormGroup;
   valid = true;
 
   constructor(
-    private angularFireStorage: AngularFireStorage,
+    private storageService: StorageService,
     private formBuilder: FormBuilder,
-    public dialogRef: MatDialogRef<DialogComponent>,
+    public dialogRef: MatDialogRef<AddDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IDialogData,
   ) {
     this.form = this.formBuilder.group({
@@ -49,19 +44,9 @@ export class DialogComponent {
   async handleFile(type: string, event: any): Promise<void> {
     this.uploading = true;
     const file = event.target.files[0];
-    const hash = this.generateRandomHash(64);
-    await this.angularFireStorage.upload(hash, file);
+    const hash = await this.storageService.uploadFile(file);
     this.data.content[type] = hash;
     this.uploading = false;
-  }
-
-  generateRandomHash(length: number): string {
-    const characters = '0123456789abcdefghijklmnopqrstuvwxyz';
-    let hash = '';
-    for (let i = 0; i <= length; i++) {
-      hash += characters[Math.floor(Math.random() * characters.length)];
-    }
-    return hash;
   }
 
 }

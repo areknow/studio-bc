@@ -47,11 +47,7 @@ export class AdminService {
 
   async login(): Promise<void> {
     const provider = new firebase.auth.GoogleAuthProvider();
-    const credential = await this.angularFireAuth.signInWithPopup(provider);
-    this.updateUserData(credential.user);
-    this.loggedIn = true;
-    this.router.navigate(['/admin/edit']);
-    sessionStorage.setItem('session', String(true));
+    this.angularFireAuth.signInWithRedirect(provider);
   }
 
   async logout(): Promise<void> {
@@ -61,7 +57,7 @@ export class AdminService {
     sessionStorage.removeItem('session');
   }
 
-  private updateUserData(user: IUser): Promise<void> {
+  updateUserData(user: IUser): Promise<void> {
     const userRef: AngularFirestoreDocument<IUser> = this.angularFirestore.doc(`users/${user.uid}`);
     const data = {
       uid: user.uid,

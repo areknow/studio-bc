@@ -1,3 +1,4 @@
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -12,21 +13,26 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { LoaderModule } from 'src/app/shared/components/loader/loader.module';
 import { ImagePipeModule } from 'src/app/shared/pipes/image/image.module';
-import { DialogComponent } from './dialog/dialog.component';
-import { FileLabelPipe } from './dialog/file-label.pipe';
+import { AddDialogComponent } from './add-dialog/add-dialog.component';
+import { FileLabelPipe } from './add-dialog/file-label.pipe';
 import { EditRoutingModule } from './edit-routing.module';
 import { EditComponent } from './edit.component';
+import { ItemPipe } from './sort-dialog/item.pipe';
+import { SortDialogComponent } from './sort-dialog/sort-dialog.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
 @NgModule({
   declarations: [
     EditComponent,
-    DialogComponent,
+    AddDialogComponent,
     FileLabelPipe,
     UnauthorizedComponent,
+    SortDialogComponent,
+    ItemPipe,
   ],
   imports: [
     RouterModule,
@@ -47,6 +53,8 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
     MatCheckboxModule,
     ImagePipeModule,
     LoaderModule,
+    DragDropModule,
+    MatTooltipModule,
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },

@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import Chocolat from 'chocolat';
+import Macy from 'macy';
 import { AdminService } from '../admin/admin.service';
-import { IGalleryItem } from '../admin/edit/edit.component';
+import { DocumentService } from '../shared/services/document.service';
+import { IGalleryItem } from '../shared/types';
 
-declare var require: any;
+const MASONRY_CLASS = '.masonry';
 
 const CHOCOLAT_OPTIONS = {
   fullScreen: null,
@@ -11,9 +13,9 @@ const CHOCOLAT_OPTIONS = {
 };
 
 const MACY_OPTIONS = {
-  container: '.masonry',
+  container: MASONRY_CLASS,
   columns: 4,
-  trueOrder: false,
+  trueOrder: true,
   margin: { y: 30, x: 30 },
   breakAt: {
     940: {
@@ -32,9 +34,13 @@ const MACY_OPTIONS = {
 })
 export class GalleryComponent {
 
-  private itemsCollection: AngularFirestoreCollection<IGalleryItem>;
+  macyInstance: Macy;
+  chocolatInstance: Chocolat;
+
   items: IGalleryItem[] = [];
   loading = true;
+
+  order: any;
 
   get isLoggedIn(): boolean {
     return this.adminService.loggedIn;
@@ -42,24 +48,47 @@ export class GalleryComponent {
 
   constructor(
     private adminService: AdminService,
-    private angularFirestore: AngularFirestore,
+    private documentService: DocumentService,
   ) {
-    this.itemsCollection = this.angularFirestore.collection<IGalleryItem>('gallery');
-    this.itemsCollection.valueChanges().subscribe(response => {
-      this.items = response;
+    // React to grid values
+    this.documentService.gallery$.subscribe(items => {
+      this.items = items;
       setTimeout(() => {
         this.renderGrid();
       }, 0);
     });
+    // React to grid order
+    this.documentService.order$.subscribe(items => {
+      this.order = items.value;
+      this.sortArray();
+    });
+  }
+
+  sortArray(): void {
+    const orderedGrid = [];
+    for (const item of this.order) {
+      orderedGrid.push(this.items.find(e => e.id === item.id));
+    }
+    this.items = orderedGrid;
+    if (this.macyInstance) {
+      setTimeout(() => {
+        this.chocolatInstance.api().destroy();
+        this.initChocolat();
+        this.macyInstance.reInit();
+      }, 0);
+    }
   }
 
   renderGrid(): void {
-    const macy = require('macy');
-    const masonry = new macy(MACY_OPTIONS);
-    $('.masonry').Chocolat(CHOCOLAT_OPTIONS);
+    this.macyInstance = new Macy(MACY_OPTIONS);
+    this.initChocolat();
     setTimeout(() => {
       this.loading = false;
     }, 1000);
+  }
+
+  initChocolat(): void {
+    this.chocolatInstance = $(MASONRY_CLASS).Chocolat(CHOCOLAT_OPTIONS).data('chocolat');
   }
 
 }

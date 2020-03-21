@@ -1,24 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, DocumentData } from '@angular/fire/firestore';
+import { DocumentData } from '@angular/fire/firestore';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import 'firebase/storage';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { DocumentService } from 'src/app/shared/services/document.service';
+import { IDialogData, IGalleryItem } from 'src/app/shared/types';
 import { AdminService } from '../admin.service';
-import { DialogComponent, IDialogData } from './dialog/dialog.component';
-
-export interface IGalleryItem {
-  name: string;
-  width: number;
-  height: number;
-  price: number;
-  sold: boolean;
-  image: string;
-  thumbnail: string;
-  date: Date;
-}
+import { AddDialogComponent } from './add-dialog/add-dialog.component';
+import { SortDialogComponent } from './sort-dialog/sort-dialog.component';
 
 @Component({
   selector: 'app-edit',
@@ -27,14 +17,14 @@ export interface IGalleryItem {
 })
 export class EditComponent {
 
+  @ViewChild('table') table: MatTable<IGalleryItem>;
+
   @ViewChild(MatSort) set content(sort: MatSort) {
     this.dataSource.sort = sort;
   }
 
-  dataSource = new MatTableDataSource();
+  dataSource = new MatTableDataSource<IGalleryItem>();
 
-  private itemsCollection: AngularFirestoreCollection<IGalleryItem>;
-  items$: Observable<IGalleryItem[]>;
   items: IGalleryItem[];
 
   columns = [
@@ -66,25 +56,24 @@ export class EditComponent {
 
   constructor(
     private adminService: AdminService,
-    private angularFirestore: AngularFirestore,
     public dialog: MatDialog,
+    private documentService: DocumentService,
   ) {
-    this.itemsCollection = this.angularFirestore.collection<IGalleryItem>('gallery');
-    this.items$ = this.itemsCollection.snapshotChanges().pipe(map(actions => {
-      return actions.map(action => {
-        const data = action.payload.doc.data() as IGalleryItem;
-        const id = action.payload.doc.id;
-        return { id, ...data };
-      });
-    }));
-    this.items$.subscribe(items => {
+    this.documentService.gallery$.subscribe(items => {
       this.items = items;
       this.dataSource.data = this.items;
     });
   }
 
-  openModal(type: 'add'|'edit', data: DocumentData, id?: number): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
+  openSortModal(): void {
+    const dialogRef = this.dialog.open(SortDialogComponent, {
+      width: '400px',
+      height: '800px',
+    });
+  }
+
+  openAddModal(type: 'add'|'edit', data: DocumentData, id?: string): void {
+    const dialogRef = this.dialog.open(AddDialogComponent, {
       disableClose: true,
       width: '400px',
       height: '500px',
@@ -99,9 +88,9 @@ export class EditComponent {
           if (type === 'add') {
             // Add date before saving
             result.content.date = new Date();
-            await this.itemsCollection.add(result.content);
+            this.documentService.addGalleryItem(result.content);
           } else if (type === 'edit') {
-            await this.itemsCollection.doc(String(id)).set(result.content);
+            this.documentService.updateGalleryItem(id, result.content);
           }
         } catch (error) {
           console.log(error);
@@ -112,21 +101,21 @@ export class EditComponent {
   }
 
   newRow(): void {
-    this.openModal('add', this.dialogData);
+    this.openAddModal('add', this.dialogData);
   }
 
-  async editRow(id: number): Promise<void> {
+  async editRow(id: string): Promise<void> {
     try {
-      const doc = await this.itemsCollection.doc(String(id)).ref.get();
-      this.openModal('edit', doc.data(), id);
+      const doc = await this.documentService.getGalleryItem(id);
+      this.openAddModal('edit', doc.data(), id);
     } catch (error) {
       console.log(error);
     }
   }
 
-  async deleteRow(id: number): Promise<void> {
+  async deleteRow(id: string): Promise<void> {
     try {
-      await this.itemsCollection.doc(String(id)).ref.delete();
+      this.documentService.deleteGalleryItem(id);
     } catch (error) {
       console.log(error);
     }

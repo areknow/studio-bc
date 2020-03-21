@@ -1,0 +1,12 @@
+<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+  <div class="example-box" *ngFor="let item of this.list" cdkDrag>
+    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+    <ng-container *ngIf="gallery | item : item.id">
+      <span>
+        <span class="name">{{ (gallery | item : item.id).name }}</span>
+        {{ (gallery | item : item.id).width }}"x{{ (gallery | item : item.id).height }}"
+      </span>
+      <div class="image" [style.background-image]="(gallery | item : item.id).thumbnail | image : 'div'"></div>
+    </ng-container>
+  </div>
+</div>
