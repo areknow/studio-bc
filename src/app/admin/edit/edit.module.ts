@@ -20,7 +20,7 @@ import { ImagePipeModule } from 'src/app/shared/pipes/image/image.module';
 import { AddDialogComponent } from './add-dialog/add-dialog.component';
 import { FileLabelPipe } from './add-dialog/file-label.pipe';
 import { EditRoutingModule } from './edit-routing.module';
-import { EditComponent } from './edit.component';
+import { ConfirmDialog, EditComponent } from './edit.component';
 import { ItemPipe } from './sort-dialog/item.pipe';
 import { SortDialogComponent } from './sort-dialog/sort-dialog.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
@@ -33,6 +33,7 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
     UnauthorizedComponent,
     SortDialogComponent,
     ItemPipe,
+    ConfirmDialog,
   ],
   imports: [
     RouterModule,

@@ -1,6 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { DocumentData } from '@angular/fire/firestore';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import 'firebase/storage';
@@ -9,6 +9,29 @@ import { IDialogData, IGalleryItem } from 'src/app/shared/types';
 import { AdminService } from '../admin.service';
 import { AddDialogComponent } from './add-dialog/add-dialog.component';
 import { SortDialogComponent } from './sort-dialog/sort-dialog.component';
+
+@Component({
+  selector: 'app-confirm-dialog',
+  template: `
+    <div mat-dialog-content>
+      <h1>Are you sure?</h1>
+      <p>Deleting a gallery item is permanent. This action cannot be undone.</p>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="cancel()">Cancel</button>
+      <button mat-button [mat-dialog-close]="state" cdkFocusInitial>Ok</button>
+    </div>
+  `,
+})
+export class ConfirmDialog {
+  constructor(
+    public dialogRef: MatDialogRef<ConfirmDialog>,
+    @Inject(MAT_DIALOG_DATA) public state: boolean,
+  ) { this.state = true; }
+  cancel(): void {
+    this.dialogRef.close();
+  }
+}
 
 @Component({
   selector: 'app-edit',
@@ -114,11 +137,20 @@ export class EditComponent {
   }
 
   async deleteRow(id: string): Promise<void> {
-    try {
-      this.documentService.deleteGalleryItem(id);
-    } catch (error) {
-      console.log(error);
-    }
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '400px',
+      height: '200px',
+    });
+    dialogRef.afterClosed().subscribe((state: boolean) => {
+      if (state) {
+        try {
+          this.documentService.deleteGalleryItem(id);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
+
   }
 
   logout(): void {
