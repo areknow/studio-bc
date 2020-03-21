@@ -54,6 +54,11 @@ export class GalleryComponent {
     this.documentService.gallery$.subscribe(items => {
       this.items = items;
       setTimeout(() => {
+        if (this.chocolatInstance) {
+          this.chocolatInstance.api().destroy();
+          this.initChocolat();
+          this.sortArray();
+        }
         this.renderGrid();
       }, 0);
     });
