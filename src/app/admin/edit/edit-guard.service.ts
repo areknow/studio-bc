@@ -10,9 +10,6 @@ export class EditGuardService implements CanActivate {
 
   constructor(private adminService: AdminService) { }
 
-  /**
-   * Can activate guard
-   */
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     const session = coerceBooleanProperty(sessionStorage.getItem('session'));
     if (session) {
