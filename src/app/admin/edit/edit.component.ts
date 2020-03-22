@@ -46,6 +46,8 @@ export class EditComponent implements OnInit {
     this.dataSource.sort = sort;
   }
 
+  loading = true;
+
   dataSource = new MatTableDataSource<IGalleryItem>();
 
   items: IGalleryItem[];
@@ -79,6 +81,7 @@ export class EditComponent implements OnInit {
     this.documentService.gallery$.subscribe(items => {
       this.items = items;
       this.dataSource.data = this.items;
+      this.loading = false;
     });
   }
 

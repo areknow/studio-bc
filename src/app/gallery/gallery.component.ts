@@ -1,3 +1,4 @@
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Component } from '@angular/core';
 import Chocolat from 'chocolat';
 import Macy from 'macy';
@@ -71,8 +72,8 @@ export class GalleryComponent {
 
   sortArray(): void {
     const orderedGrid = [];
-    for (const item of this.order) {
-      orderedGrid.push(this.items.find(e => e.id === item.id));
+    for (const orderEntry of this.order) {
+      orderedGrid.push(this.items.find(item => item.id === orderEntry.id));
     }
     this.items = orderedGrid;
     if (this.macyInstance) {
@@ -85,11 +86,15 @@ export class GalleryComponent {
   }
 
   renderGrid(): void {
-    this.macyInstance = new Macy(MACY_OPTIONS);
-    this.initChocolat();
-    setTimeout(() => {
-      this.loading = false;
-    }, 1000);
+    // Grid rendering is not necessary under auth redirect circumstances
+    const redirect = coerceBooleanProperty(sessionStorage.getItem('redirect'));
+    if (!redirect) {
+      this.macyInstance = new Macy(MACY_OPTIONS);
+      this.initChocolat();
+      setTimeout(() => {
+        this.loading = false;
+      }, 1000);
+    }
   }
 
   initChocolat(): void {

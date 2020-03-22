@@ -58,6 +58,7 @@ export class AdminService {
     } catch (error) {
       console.log(error);
     }
+    sessionStorage.setItem('redirect', String(true));
   }
 
   async logout(): Promise<void> {
@@ -69,6 +70,7 @@ export class AdminService {
     this.loggedIn = false;
     this.router.navigate(['/']);
     sessionStorage.removeItem('session');
+    sessionStorage.removeItem('redirect');
   }
 
   async updateUserData(user: IUser): Promise<void> {
