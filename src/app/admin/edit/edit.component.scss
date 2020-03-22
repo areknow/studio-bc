@@ -5,11 +5,10 @@
   display: flex;
 }
 
-table {
-  width: 100%;
-  span {
-    font-weight: bold;
-  }
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .toolbar-spacer {
@@ -63,6 +62,30 @@ table {
   ::-ms-input-placeholder {
     color: #fff;
   }
+}
+
+.user {
+  margin-left: 5px;
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  .photo {
+    height: 30px;
+    width: 30px;
+    border-radius: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-left: 13px;
+  }
+}
+
+table {
+  width: 100%;
+  span {
+    font-weight: bold;
+  }
+}
+.mat-table-sticky {
+  top: 64px !important;
 }
 
 .align-right {

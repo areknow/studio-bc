@@ -25,6 +25,7 @@ export class AdminService {
 
   loggedIn = false;
   isAdmin = undefined;
+  photo = '';
 
   constructor(
     private angularFireAuth: AngularFireAuth,
@@ -45,6 +46,7 @@ export class AdminService {
     this.user$.subscribe(user => {
       if (user) {
         this.isAdmin = user.isAdmin;
+        this.photo = user.photoURL;
       }
     });
   }

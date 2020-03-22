@@ -18,8 +18,8 @@ import { SortDialogComponent } from './sort-dialog/sort-dialog.component';
       <p>Deleting a gallery item is permanent. This action cannot be undone.</p>
     </div>
     <div mat-dialog-actions>
-      <button mat-button (click)="cancel()">Cancel</button>
-      <button mat-button [mat-dialog-close]="state" cdkFocusInitial>Ok</button>
+      <button mat-button (click)="cancel()" cdkFocusInitial>Cancel</button>
+      <button mat-button [mat-dialog-close]="state">Delete</button>
     </div>
   `,
 })
@@ -65,6 +65,10 @@ export class EditComponent implements OnInit {
 
   get isAdmin(): boolean {
     return this.adminService.isAdmin;
+  }
+
+  get userPhoto(): string {
+    return this.adminService.photo;
   }
 
   constructor(
@@ -144,7 +148,6 @@ export class EditComponent implements OnInit {
         }
       }
     });
-
   }
 
   logout(): void {
