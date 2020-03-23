@@ -11,7 +11,7 @@
         *ngFor="let item of items"
         class="chocolat-image"
         [href]="item.image | image : 'img'"
-        [title]="item | caption"
+        [attr.caption]="item | caption"
       >
         <img [src]="item.thumbnail | image : 'img'">
       </a>
