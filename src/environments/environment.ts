@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: undefined,
+    apiKey: 'AIzaSyD4A5HENaA3f-FeoqONuzgqGWuqwWD_vE4',
     authDomain: 'studio-bc.firebaseapp.com',
     databaseURL: 'https://studio-bc.firebaseio.com',
     projectId: 'studio-bc',
