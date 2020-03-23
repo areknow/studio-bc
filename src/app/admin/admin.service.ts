@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
-import { EMPTY, Observable, of } from 'rxjs';
-import { switchMap, take } from 'rxjs/operators';
+import { EMPTY, Observable, of, Subject } from 'rxjs';
+import { switchMap, take, takeUntil } from 'rxjs/operators';
 
 export interface IUser {
   uid: string;
@@ -19,13 +19,15 @@ export interface IUser {
 @Injectable({
   providedIn: 'root',
 })
-export class AdminService {
+export class AdminService implements OnDestroy {
 
   user$: Observable<IUser> = EMPTY;
 
   loggedIn = false;
   isAdmin = undefined;
   photo = '';
+
+  unsubscribe$ = new Subject();
 
   constructor(
     private angularFireAuth: AngularFireAuth,
@@ -43,12 +45,17 @@ export class AdminService {
         return of(null);
       }
     }));
-    this.user$.subscribe(user => {
+    this.user$.pipe(takeUntil(this.unsubscribe$)).subscribe(user => {
       if (user) {
         this.isAdmin = user.isAdmin;
         this.photo = user.photoURL;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   async login(): Promise<void> {

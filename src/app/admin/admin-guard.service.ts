@@ -21,7 +21,7 @@ export class AdminGuardService implements CanActivate {
         this.adminService.loggedIn = true;
         this.router.navigate(['/admin/edit']);
         sessionStorage.setItem('session', String(true));
-        sessionStorage.removeItem('redirect');
+        sessionStorage.setItem('redirect', String(false));
       }
     });
     return true;

@@ -1,7 +1,9 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import Chocolat from 'chocolat';
 import Macy from 'macy';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AdminService } from '../admin/admin.service';
 import { DocumentService } from '../shared/services/document.service';
 import { IGalleryItem } from '../shared/types';
@@ -33,7 +35,7 @@ const MACY_OPTIONS = {
   templateUrl: './gallery.component.html',
   styleUrls: ['./gallery.component.scss'],
 })
-export class GalleryComponent {
+export class GalleryComponent implements OnDestroy {
 
   macyInstance: Macy;
   chocolatInstance: Chocolat;
@@ -42,6 +44,8 @@ export class GalleryComponent {
   loading = true;
 
   order: any;
+
+  unsubscribe$ = new Subject();
 
   get isLoggedIn(): boolean {
     return this.adminService.loggedIn;
@@ -52,7 +56,7 @@ export class GalleryComponent {
     private documentService: DocumentService,
   ) {
     // React to grid values
-    this.documentService.gallery$.subscribe(items => {
+    this.documentService.gallery$.pipe(takeUntil(this.unsubscribe$)).subscribe(items => {
       this.items = items;
       setTimeout(() => {
         if (this.chocolatInstance) {
@@ -64,10 +68,15 @@ export class GalleryComponent {
       }, 0);
     });
     // React to grid order
-    this.documentService.order$.subscribe(items => {
+    this.documentService.order$.pipe(takeUntil(this.unsubscribe$)).subscribe(items => {
       this.order = items.value;
       this.sortArray();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   sortArray(): void {

@@ -1,9 +1,11 @@
-import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DocumentData } from '@angular/fire/firestore';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import 'firebase/storage';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { DocumentService } from 'src/app/shared/services/document.service';
 import { IDialogData, IGalleryItem } from 'src/app/shared/types';
 import { AdminService } from '../admin.service';
@@ -38,7 +40,7 @@ export class ConfirmDialog {
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss'],
 })
-export class EditComponent implements OnInit {
+export class EditComponent implements OnInit, OnDestroy {
 
   @ViewChild('table') table: MatTable<IGalleryItem>;
 
@@ -65,6 +67,8 @@ export class EditComponent implements OnInit {
     date: null,
   };
 
+  unsubscribe$ = new Subject();
+
   get isAdmin(): boolean {
     return this.adminService.isAdmin;
   }
@@ -78,7 +82,7 @@ export class EditComponent implements OnInit {
     public dialog: MatDialog,
     private documentService: DocumentService,
   ) {
-    this.documentService.gallery$.subscribe(items => {
+    this.documentService.gallery$.pipe(takeUntil(this.unsubscribe$)).subscribe(items => {
       this.items = items;
       this.dataSource.data = this.items;
       this.loading = false;
@@ -87,6 +91,11 @@ export class EditComponent implements OnInit {
 
   ngOnInit(): void {
     this.onResize();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   openSortModal(): void {
